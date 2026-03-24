@@ -7,8 +7,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CalculatorTest {
 
@@ -16,18 +17,12 @@ public class CalculatorTest {
 
     private Calculator calculatorUnderTest;
 
+    /*------------------------------- Before tests --------------------------------------*/
+
     @BeforeAll
     public static void initStartingTime() {
         System.out.println("Initializing stopwatch...");
         startedAt = Instant.now();
-    }
-
-    @AfterAll
-    public static void initFinishingTime() {
-        System.out.println("Finishing stopwatch...");
-        Instant endedAt = Instant.now();
-        long duration = Duration.between(startedAt, endedAt).toMillis();
-        System.out.println("Duration of the tests: " + duration + " ms");
     }
 
     @BeforeEach
@@ -36,11 +31,7 @@ public class CalculatorTest {
         calculatorUnderTest = new Calculator();
     }
 
-    @AfterEach
-    public void undefineCalculator() {
-        System.out.println("Undefining Calculator...");
-        calculatorUnderTest = null;
-    }
+    /*-------------------------------- Tests -------------------------------------*/
 
     @Test
     public void add_shouldReturnTheSum_ofTwoPositiveNumbers() {
@@ -52,7 +43,7 @@ public class CalculatorTest {
         int sum = calculatorUnderTest.add(a, b);
 
         // Assert
-        assertEquals(5, sum);
+        assertThat(sum).isEqualTo(5);
     }
 
     @Test
@@ -65,7 +56,7 @@ public class CalculatorTest {
         int product = calculatorUnderTest.multiply(a, b);
 
         // Assert
-        assertEquals(6, product);
+        assertThat(product).isEqualTo(6);
     }
 
     @ParameterizedTest(name = "{0} * 0 should return zero")
@@ -78,7 +69,7 @@ public class CalculatorTest {
         int product = calculatorUnderTest.multiply(arg, 0);
 
         // Assert
-        assertEquals(0, product);
+        assertThat(product).isEqualTo(0);
     }
 
     @ParameterizedTest(name = "{0} + {1} should return {2}")
@@ -91,7 +82,7 @@ public class CalculatorTest {
         int actualResult = calculatorUnderTest.add(arg1, arg2);
 
         // Assert
-        assertEquals(expectedResult, actualResult);
+        assertThat(actualResult).isEqualTo(expectedResult);
     }
 
     @Test
@@ -105,5 +96,60 @@ public class CalculatorTest {
 
         // Assert
         // Nothing to do here
+    }
+
+    @Test
+    public void digitsSet_shouldReturnsTheSetOfDigits_ofPositiveIntegers() {
+
+        // GIVEN
+        int number = 95897;
+
+        // WHEN
+        Set<Integer> actualDigits = calculatorUnderTest.digitsSet(number);
+
+        // THEN
+        assertThat(actualDigits).containsExactlyInAnyOrder(5, 7, 8, 9);
+    }
+
+    @Test
+    public void digitsSet_shouldReturnsTheSetOfDigits_ofNegativeIntegers() {
+
+        // GIVEN
+        int number = -124432;
+
+        // WHEN
+        Set<Integer> actualDigits = calculatorUnderTest.digitsSet(number);
+
+        // THEN
+        assertThat(actualDigits).containsExactlyInAnyOrder(1, 2, 3, 4);
+    }
+
+    @Test
+    public void digitsSet_shouldReturnsTheSetOfZero_ofZero() {
+
+        // GIVEN
+        int number = 0;
+
+        // WHEN
+        Set<Integer> actualDigits = calculatorUnderTest.digitsSet(number);
+
+        // THEN
+        assertThat(actualDigits).containsExactly(0);
+    }
+
+    /*-------------------------------- After tests -------------------------------------*/
+
+    @AfterEach
+    public void undefineCalculator() {
+        System.out.println("Undefining Calculator...");
+        calculatorUnderTest = null;
+    }
+
+    @AfterAll
+    public static void initFinishingTime() {
+        System.out.println("Finishing stopwatch...");
+        Instant endedAt = Instant.now();
+        long duration = Duration.between(startedAt, endedAt).toMillis();
+        System.out.println("Duration of the tests: " + duration + " ms");
     }
 }
