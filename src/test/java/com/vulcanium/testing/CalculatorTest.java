@@ -69,7 +69,7 @@ public class CalculatorTest {
         int product = calculatorUnderTest.multiply(arg, 0);
 
         // Assert
-        assertThat(product).isEqualTo(0);
+        assertThat(product).isZero();
     }
 
     @ParameterizedTest(name = "{0} + {1} should return {2}")
