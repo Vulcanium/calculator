@@ -1,6 +1,9 @@
 package com.vulcanium.testing;
 
+import com.vulcanium.testing.logging.LoggingExtension;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -11,11 +14,20 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ExtendWith(LoggingExtension.class)
 public class CalculatorTest {
 
     private static Instant startedAt;
 
     private Calculator calculatorUnderTest;
+
+    /*------------------------------- Tests logs --------------------------------------*/
+
+    private Logger logger;
+
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
 
     /*------------------------------- Before tests --------------------------------------*/
 
@@ -27,13 +39,14 @@ public class CalculatorTest {
 
     @BeforeEach
     public void initCalculator() {
-        System.out.println("Initializing Calculator...");
+        logger.info("Initializing Calculator...");
         calculatorUnderTest = new Calculator();
     }
 
     /*-------------------------------- Tests -------------------------------------*/
 
     @Test
+    @Tag("FourOperations") // Is one of the four basic operations (addition, multiplication, subtraction, and division)
     public void add_shouldReturnTheSum_ofTwoPositiveNumbers() {
         // Arrange
         int a = 2;
@@ -47,6 +60,7 @@ public class CalculatorTest {
     }
 
     @Test
+    @Tag("FourOperations") // Is one of the four basic operations (addition, multiplication, subtraction, and division)
     public void multiply_shouldReturnTheProduct_ofTwoIntegers() {
         // Arrange
         int a = 3;
@@ -141,7 +155,7 @@ public class CalculatorTest {
 
     @AfterEach
     public void undefineCalculator() {
-        System.out.println("Undefining Calculator...");
+        logger.info("Undefining Calculator...");
         calculatorUnderTest = null;
     }
 
