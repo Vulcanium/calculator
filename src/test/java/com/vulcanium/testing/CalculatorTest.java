@@ -33,13 +33,13 @@ public class CalculatorTest {
 
     @BeforeAll
     public static void initStartingTime() {
-        System.out.println("Initializing stopwatch...");
+        System.out.println("Initializing stopwatch for CalculatorTest...");
         startedAt = Instant.now();
     }
 
     @BeforeEach
     public void initCalculator() {
-        logger.info("Initializing Calculator...");
+        logger.info("Initializing Calculator under test...");
         calculatorUnderTest = new Calculator();
     }
 
@@ -155,13 +155,13 @@ public class CalculatorTest {
 
     @AfterEach
     public void undefineCalculator() {
-        logger.info("Undefining Calculator...");
+        logger.info("Undefining Calculator under test...");
         calculatorUnderTest = null;
     }
 
     @AfterAll
     public static void initFinishingTime() {
-        System.out.println("Finishing stopwatch...");
+        System.out.println("Finishing stopwatch for CalculatorTest...");
         Instant endedAt = Instant.now();
         long duration = Duration.between(startedAt, endedAt).toMillis();
         System.out.println("Duration of the tests: " + duration + " ms");

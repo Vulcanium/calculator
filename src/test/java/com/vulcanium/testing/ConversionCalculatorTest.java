@@ -15,7 +15,7 @@ public class ConversionCalculatorTest {
 
     @BeforeEach
     public void initConversionCalculator() {
-        System.out.println("Initializing ConversionCalculator...");
+        System.out.println("Initializing ConversionCalculator under test...");
         conversionCalculatorUnderTest = new ConversionCalculator();
     }
 
