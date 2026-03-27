@@ -8,8 +8,11 @@ public class CalculatorServiceImpl implements CalculatorService {
 
     private final Calculator calculator;
 
-    public CalculatorServiceImpl(Calculator calculator) {
+    private final SolutionFormatter solutionFormatter;
+
+    public CalculatorServiceImpl(Calculator calculator, SolutionFormatter solutionFormatter) {
         this.calculator = calculator;
+        this.solutionFormatter = solutionFormatter;
     }
 
     @Override
@@ -18,7 +21,8 @@ public class CalculatorServiceImpl implements CalculatorService {
 
         Integer response = switch (type) {
             case ADDITION -> calculator.add(calculationModel.getLeftArgument(), calculationModel.getRightArgument());
-            case SUBSTRACTION -> calculator.sub(calculationModel.getLeftArgument(), calculationModel.getRightArgument());
+            case SUBSTRACTION ->
+                    calculator.sub(calculationModel.getLeftArgument(), calculationModel.getRightArgument());
             case MULTIPLICATION ->
                     calculator.multiply(calculationModel.getLeftArgument(), calculationModel.getRightArgument());
             case DIVISION -> calculator.divide(calculationModel.getLeftArgument(), calculationModel.getRightArgument());
@@ -26,6 +30,8 @@ public class CalculatorServiceImpl implements CalculatorService {
         };
 
         calculationModel.setSolution(response);
+        calculationModel.setFormattedSolution(solutionFormatter.format(response));
+
         return calculationModel;
     }
 

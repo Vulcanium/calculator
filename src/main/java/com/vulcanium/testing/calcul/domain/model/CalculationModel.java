@@ -6,72 +6,82 @@ package com.vulcanium.testing.calcul.domain.model;
  *
  */
 public class CalculationModel {
-	private static final String SEPARATOR = " ";
-	private Integer leftArgument;
-	private Integer rightArgument;
-	private CalculationType type;
-	private Integer solution;
+    private static final String SEPARATOR = " ";
+    private Integer leftArgument;
+    private Integer rightArgument;
+    private CalculationType type;
 
-	public CalculationModel(CalculationType calculationType, int leftArgument, int rightArgument) {
-		type = calculationType;
-		this.leftArgument = leftArgument;
-		this.rightArgument = rightArgument;
-	}
+    private Integer solution;
+    private String formattedSolution;
 
-	/**
-	 * Convenience Constructor used in test
-	 */
-	public CalculationModel(CalculationType calculationType, int leftArgument, int rightArgument, Integer solution) {
-		type = calculationType;
-		this.leftArgument = leftArgument;
-		this.rightArgument = rightArgument;
-		this.solution = solution;
-	}
+    public CalculationModel(CalculationType calculationType, int leftArgument, int rightArgument) {
+        type = calculationType;
+        this.leftArgument = leftArgument;
+        this.rightArgument = rightArgument;
+    }
 
-	/**
-	 * Builds a Calculation from a string such as 2 + 2
-	 *
-	 * @param calculation in written form
-	 * @return model representing the calculation
-	 */
-	public static CalculationModel fromText(String calculation) {
-		final String[] parts = calculation.split(SEPARATOR);
-		final int leftArgument = Integer.parseInt(parts[0]);
-		final int rightArgument = Integer.parseInt(parts[2]);
-		final CalculationType calculationType = CalculationType.fromSymbol(parts[1]);
+    /**
+     * Convenience Constructor used in test
+     */
+    public CalculationModel(CalculationType calculationType, int leftArgument, int rightArgument, Integer solution) {
+        type = calculationType;
+        this.leftArgument = leftArgument;
+        this.rightArgument = rightArgument;
+        this.solution = solution;
+    }
 
-		return new CalculationModel(calculationType, leftArgument, rightArgument);
-	}
+    /**
+     * Builds a Calculation from a string such as 2 + 2
+     *
+     * @param calculation in written form
+     * @return model representing the calculation
+     */
+    public static CalculationModel fromText(String calculation) {
+        final String[] parts = calculation.split(SEPARATOR);
+        final int leftArgument = Integer.parseInt(parts[0]);
+        final int rightArgument = Integer.parseInt(parts[2]);
+        final CalculationType calculationType = CalculationType.fromSymbol(parts[1]);
 
-	public Integer getLeftArgument() {
-		return leftArgument;
-	}
+        return new CalculationModel(calculationType, leftArgument, rightArgument);
+    }
 
-	public void setLeftArgument(Integer leftArgument) {
-		this.leftArgument = leftArgument;
-	}
+    public Integer getLeftArgument() {
+        return leftArgument;
+    }
 
-	public Integer getRightArgument() {
-		return rightArgument;
-	}
+    public void setLeftArgument(Integer leftArgument) {
+        this.leftArgument = leftArgument;
+    }
 
-	public void setRightArgument(Integer rightArgument) {
-		this.rightArgument = rightArgument;
-	}
+    public Integer getRightArgument() {
+        return rightArgument;
+    }
 
-	public CalculationType getType() {
-		return type;
-	}
+    public void setRightArgument(Integer rightArgument) {
+        this.rightArgument = rightArgument;
+    }
 
-	public void setType(CalculationType type) {
-		this.type = type;
-	}
+    public CalculationType getType() {
+        return type;
+    }
 
-	public Integer getSolution() {
-		return solution;
-	}
+    public void setType(CalculationType type) {
+        this.type = type;
+    }
 
-	public void setSolution(Integer solution) {
-		this.solution = solution;
-	}
+    public Integer getSolution() {
+        return solution;
+    }
+
+    public void setSolution(Integer solution) {
+        this.solution = solution;
+    }
+
+    public String getFormattedSolution() {
+        return formattedSolution;
+    }
+
+    public void setFormattedSolution(String formattedSolution) {
+        this.formattedSolution = formattedSolution;
+    }
 }

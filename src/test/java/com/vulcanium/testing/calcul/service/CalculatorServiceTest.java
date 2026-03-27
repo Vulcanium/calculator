@@ -23,13 +23,16 @@ public class CalculatorServiceTest {
     @Mock
     Calculator calculator = new Calculator();
 
+    @Mock
+    SolutionFormatter solutionFormatter;
+
     CalculatorService calculatorServiceUnderTest;
 
     /*------------------------------- Before tests --------------------------------------*/
 
     @BeforeEach
     public void initCalculatorService() {
-        calculatorServiceUnderTest = new CalculatorServiceImpl(calculator);
+        calculatorServiceUnderTest = new CalculatorServiceImpl(calculator, solutionFormatter);
     }
 
     /*-------------------------------- Tests -------------------------------------*/
@@ -132,5 +135,24 @@ public class CalculatorServiceTest {
 
         // THEN
         verify(calculator, times(1)).divide(2, 0);
+    }
+
+    @Test
+    public void calculate_shouldFormatSolution_forAddition() {
+
+        // GIVEN
+        when(calculator.add(10000, 3000)).thenReturn(13000);
+        when(solutionFormatter.format(13000)).thenReturn("13 000");
+
+        // WHEN
+        final String formattedSolution = calculatorServiceUnderTest
+                .calculate(new CalculationModel(CalculationType.ADDITION, 10000, 3000))
+                .getFormattedSolution();
+
+        // THEN
+        verify(calculator).add(10000, 3000);
+        verify(solutionFormatter).format(13000);
+
+        assertThat(formattedSolution).isEqualTo("13 000");
     }
 }
