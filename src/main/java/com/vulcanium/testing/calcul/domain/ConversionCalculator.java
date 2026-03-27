@@ -2,51 +2,54 @@ package com.vulcanium.testing.calcul.domain;
 
 public class ConversionCalculator {
 
-    // constantes pour la conversion des températures
+    // Constants for temperature conversion
     private static final double BASE_FAHRENHEIT = 32.0;
-    private static final double CELSIUS_FAHRENHEIT_CONVERSION_FACTOR = 9.0/5.0;
+    private static final double CELSIUS_FAHRENHEIT_CONVERSION_FACTOR = 9.0 / 5.0;
 
-    // constantes pour la conversion des volumes
-    private static final double LITRE_TO_GALLON_MULTIPLIER = 0.264172;
+    // Constants for volume conversion
+    private static final double LITER_TO_GALLON_MULTIPLIER = 0.264172;
 
-    // Exposant pour le calcul d'une aire de disque
+    // Exponent for calculating the area of a disk
     private static final double POWER_OF_RADIUS = 2.0;
 
     /**
-     * Convertir centigrade en fahrenheit.
-     * @param celsiusTemperature à convertir
-     * @return fahrenheit temperature.
+     * Convert Celsius to Fahrenheit.
+     *
+     * @param celsiusTemperature to convert
+     * @return Fahrenheit temperature.
      */
     public Double celsiusToFahrenheit(Double celsiusTemperature) {
         return (celsiusTemperature * CELSIUS_FAHRENHEIT_CONVERSION_FACTOR) + BASE_FAHRENHEIT;
     }
 
     /**
-     * Convertir fahrenheit en centigrade
-     * @param fahrenheitTemperature à convertir
-     * @return Centigrade temperature
+     * Convert Fahrenheit to Celsius.
+     *
+     * @param fahrenheitTemperature to convert
+     * @return Celsius temperature
      */
     public Double fahrenheitToCelsius(Double fahrenheitTemperature) {
         return (fahrenheitTemperature - BASE_FAHRENHEIT) * CELSIUS_FAHRENHEIT_CONVERSION_FACTOR;
     }
 
     /**
-     * Convertir a volume en litres en gallons.
-     * @param litreVolume à convertir
-     * @return volume en gallons
+     * Convert volume to gallons.
+     *
+     * @param literVolume to convert
+     * @return volume to gallons
      */
-    public Double litresToGallons(Double litreVolume) {
-        return Math.ceil(litreVolume * LITRE_TO_GALLON_MULTIPLIER);
+    public Double litersToGallons(Double literVolume) {
+        return Math.ceil(literVolume * LITER_TO_GALLON_MULTIPLIER);
     }
 
     /**
-     * Convertir un rayon en aire de disque
-     * @param radius du disque
-     * @return aire du disque
+     * Convert a radius into the area of a circle.
+     *
+     * @param radius of circle
+     * @return area of circle
      */
     public Double radiusToAreaOfCircle(Double radius) {
         return Math.PI * Math.pow(radius, POWER_OF_RADIUS);
 
     }
 }
-

@@ -32,7 +32,7 @@ public class CalculationModel {
 	 * Builds a Calculation from a string such as 2 + 2
 	 *
 	 * @param calculation in written form
-	 * @return model representing the calculatoin
+	 * @return model representing the calculation
 	 */
 	public static CalculationModel fromText(String calculation) {
 		final String[] parts = calculation.split(SEPARATOR);

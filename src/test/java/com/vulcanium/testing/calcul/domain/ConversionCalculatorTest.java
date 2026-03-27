@@ -1,53 +1,56 @@
 package com.vulcanium.testing.calcul.domain;
 
-import static java.lang.Math.PI;
+import org.junit.jupiter.api.*;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.withinPercentage;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-
-import com.vulcanium.testing.calcul.domain.ConversionCalculator;
+import static org.assertj.core.api.AssertionsForClassTypes.withinPercentage;
 
 @Tag("ConversionTests")
-@DisplayName("Réussir à convertir entre différentes unités.")
-
+@DisplayName("To be able to convert between different units.")
 public class ConversionCalculatorTest {
 
-	private ConversionCalculator calculatorUnderTest = new ConversionCalculator();
+    private ConversionCalculator conversionCalculatorUnderTest;
 
-	@Nested
-	@Tag("TemperatureTests")
-	@DisplayName("Réussir à convertir des températures")
-	class TemperatureTests {
-		@Test
-		@DisplayName("Soit une T° à 0°C, lorsque l'on convertit en °F, alors on obtient 32°F.")
-		public void celsiusToFahrenheit_returnsAFahrenheitTempurature_whenCelsiusIsZero() {
-			Double actualFahrenheit = calculatorUnderTest.celsiusToFahrenheit(0.0);
-			assertThat(actualFahrenheit).isCloseTo(32.0, withinPercentage(0.01));
-		}
+    /*------------------------------- Before tests --------------------------------------*/
 
-		@Test
-		@DisplayName("Soit une T° à 32°F, lorsque l'on convertit en °C, alors on obtient 0°C.")
-		public void fahrenheitToCelsius_returnsZeroCelciusTempurature_whenThirtyTwo() {
-			Double actualCelsius = calculatorUnderTest.fahrenheitToCelsius(32.0);
-			assertThat(actualCelsius).isCloseTo(0.0, withinPercentage(0.01));
-		}
-	}
+    @BeforeEach
+    public void initConversionCalculator() {
+        System.out.println("Initializing ConversionCalculator under test...");
+        conversionCalculatorUnderTest = new ConversionCalculator();
+    }
 
-	@Test
-	@DisplayName("Soit un volume de 3.78541 litres, en gallons, on obtient 1 gallon.")
-	public void litresToGallons_returnsOneGallon_whenConvertingTheEquivalentLitres() {
-		Double actualLitres = calculatorUnderTest.litresToGallons(3.78541);
-		assertThat(actualLitres).isCloseTo(1.0, withinPercentage(0.01));
-	}
+    /*-------------------------------- Tests -------------------------------------*/
 
-	@Test
-	@DisplayName("L'aire d'un disque de rayon 1 doit valoir PI.")
-	public void radiusToAreaOfCircle_returnsPi_whenWeHaveARadiusOfOne() {
-		Double actualArea = calculatorUnderTest.radiusToAreaOfCircle(1.0);
-		assertThat(actualArea).isCloseTo(PI, withinPercentage(0.01));
-	}
+    @Nested
+    @Tag("TemperatureTests")
+    @DisplayName("To be able to convert temperatures")
+    class TemperatureTests {
+        @Test
+        @DisplayName("Given a temperature of 0°C, when converting to °F, we obtain 32°F.")
+        public void celsiusToFahrenheit_returnsAFahrenheitTemperature_whenCelsiusIsZero() {
+            Double actualFahrenheit = conversionCalculatorUnderTest.celsiusToFahrenheit(0.0);
+            assertThat(actualFahrenheit).isCloseTo(32.0, withinPercentage(0.01));
+        }
+
+        @Test
+        @DisplayName("Given a temperature of 32°F, when converting to °C, we obtain 0°C.")
+        public void fahrenheitToCelsius_returnsZeroCelsiusTemperature_whenThirtyTwo() {
+            Double actualCelsius = conversionCalculatorUnderTest.fahrenheitToCelsius(32.0);
+            assertThat(actualCelsius).isCloseTo(0.0, withinPercentage(0.01));
+        }
+    }
+
+    @Test
+    @DisplayName("Given a volume of 3.78541 liters, when converted to gallons, we obtain 1 gallon.")
+    public void litersToGallons_returnsOneGallon_whenConvertingTheEquivalentLiters() {
+        Double actualLitres = conversionCalculatorUnderTest.litersToGallons(3.78541);
+        assertThat(actualLitres).isCloseTo(1.0, withinPercentage(0.01));
+    }
+
+    @Test
+    @DisplayName("The area of a circle with radius 1 must be equal to PI.")
+    public void radiusToAreaOfCircle_returnsPi_whenWeHaveARadiusOfOne() {
+        Double actualArea = conversionCalculatorUnderTest.radiusToAreaOfCircle(1.0);
+        assertThat(actualArea).isCloseTo(Math.PI, withinPercentage(0.01));
+    }
 }

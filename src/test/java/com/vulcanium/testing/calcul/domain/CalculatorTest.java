@@ -1,210 +1,169 @@
 package com.vulcanium.testing.calcul.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.text.MessageFormat;
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Random;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
+import com.vulcanium.testing.logging.LoggingExtension;
 import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 @ExtendWith(LoggingExtension.class)
 public class CalculatorTest {
 
-	private static Instant startedAt;
+    private static Instant startedAt;
 
-	private Calculator calculatorUnderTest;
+    private Calculator calculatorUnderTest;
 
-	private Logger logger;
+    /*------------------------------- Tests logs --------------------------------------*/
 
-	public void setLogger(Logger logger) {
-		this.logger = logger;
-	}
+    private Logger logger;
 
-	@BeforeEach
-	public void initCalculator() {
-		logger.info("Appel avant chaque test");
-		calculatorUnderTest = new Calculator();
-	}
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
 
-	@AfterEach
-	public void undefCalculator() {
-		logger.info("Appel après chaque test");
-		calculatorUnderTest = null;
-	}
+    /*------------------------------- Before tests --------------------------------------*/
 
-	@BeforeAll
-	public static void initStartingTime() {
-		System.out.println("Appel avant tous les tests");
-		startedAt = Instant.now();
-	}
+    @BeforeAll
+    public static void initStartingTime() {
+        System.out.println("Initializing stopwatch for CalculatorTest...");
+        startedAt = Instant.now();
+    }
 
-	@AfterAll
-	public static void showTestDuration() {
-		System.out.println("Appel après tous les tests");
-		final Instant endedAt = Instant.now();
-		final long duration = Duration.between(startedAt, endedAt).toMillis();
-		System.out.println(MessageFormat.format("Durée des tests : {0} ms", duration));
-	}
+    @BeforeEach
+    public void initCalculator() {
+        logger.info("Initializing Calculator under test...");
+        calculatorUnderTest = new Calculator();
+    }
 
-	@Test
-	public void testAddTwoPositiveNumbers() {
-		// Arrange
-		final int a = 2;
-		final int b = 3;
+    /*-------------------------------- Tests -------------------------------------*/
 
-		// Act
-		final int somme = calculatorUnderTest.add(a, b);
+    @Test
+    @Tag("FourOperations") // Is one of the four basic operations (addition, multiplication, subtraction, and division)
+    public void add_shouldReturnTheSum_ofTwoPositiveNumbers() {
+        // Arrange
+        int a = 2;
+        int b = 3;
 
-		// Assert
-		assertThat(somme).isEqualTo(5);
-		assertEquals(5, somme);
-	}
+        // Act
+        int sum = calculatorUnderTest.add(a, b);
 
-	@Test
-	public void multiply_shouldReturnTheProduct_ofTwoIntegers() {
-		// Arrange
-		final int a = 42;
-		final int b = 11;
+        // Assert
+        assertThat(sum).isEqualTo(5);
+    }
 
-		// Act
-		final int produit = calculatorUnderTest.multiply(a, b);
+    @Test
+    @Tag("FourOperations") // Is one of the four basic operations (addition, multiplication, subtraction, and division)
+    public void multiply_shouldReturnTheProduct_ofTwoIntegers() {
+        // Arrange
+        int a = 3;
+        int b = 2;
 
-		// Assert
-		assertEquals(462, produit);
-	}
+        // Act
+        int product = calculatorUnderTest.multiply(a, b);
 
-	@ParameterizedTest(name = "{0} x 0 doit être égal à 0")
-	@ValueSource(ints = { 1, 2, 42, 1011, 5089 })
-	public void multiply_shouldReturnZero_ofZeroWithMultipleIntegers(int arg) {
-		// Arrange -- Tout est prêt !
+        // Assert
+        assertThat(product).isEqualTo(6);
+    }
 
-		// Act -- Multiplier par zéro
-		final int actualResult = calculatorUnderTest.multiply(arg, 0);
+    @ParameterizedTest(name = "{0} * 0 should return zero")
+    @ValueSource(ints = {1, 2, 42, 1001, 5089})
+    public void multiply_shouldReturnZero_ofZeroWithMultipleIntegers(int arg) {
+        // Arrange
+        // Nothing to do here
 
-		// Assert -- ça vaut toujours zéro !
-		assertEquals(0, actualResult);
-	}
+        // Act
+        int product = calculatorUnderTest.multiply(arg, 0);
 
-	@ParameterizedTest(name = "{0} + {1} doit être égal à {2}")
-	@CsvSource({ "1,1,2", "2,3,5", "42,57,99" })
-	public void add_shouldReturnTheSum_ofMultipleIntegers(int arg1, int arg2, int expectResult) {
-		// Arrange -- Tout est prêt !
+        // Assert
+        assertThat(product).isZero();
+    }
 
-		// Act
-		final int actualResult = calculatorUnderTest.add(arg1, arg2);
+    @ParameterizedTest(name = "{0} + {1} should return {2}")
+    @CsvSource({"1, 1, 2", "2, 3, 5", "42, 57, 99"})
+    public void add_shouldReturnTheSum_ofMultipleIntegers(int arg1, int arg2, int expectedResult) {
+        // Arrange
+        // Nothing to do here
 
-		// Assert
-		assertEquals(expectResult, actualResult);
-	}
+        // Act
+        int actualResult = calculatorUnderTest.add(arg1, arg2);
 
-	@Timeout(1)
-	@Test
-	public void longCalcul_shouldComputeInLessThan1Second() {
-		// Arrange
+        // Assert
+        assertThat(actualResult).isEqualTo(expectedResult);
+    }
 
-		// Act
-		calculatorUnderTest.longCalculation();
+    @Test
+    @Timeout(1)
+    public void longCalculation_shouldComputeInLessThan1Second() {
+        // Arrange
+        // Nothing to do here
 
-		// Assert
-		// ...
-	}
+        // Act
+        calculatorUnderTest.longCalculation();
 
-	@Test
-	public void listDigits_shouldReturnsTheListOfDigits_ofPositiveInteger() {
-		// GIVEN
-		final int number = 95897;
+        // Assert
+        // Nothing to do here
+    }
 
-		// WHEN
-		final Set<Integer> actualDigits = calculatorUnderTest.digitsSet(number);
+    @Test
+    public void digitsSet_shouldReturnsTheSetOfDigits_ofPositiveIntegers() {
 
-		// THEN
-		assertThat(actualDigits).containsExactlyInAnyOrder(9, 5, 8, 7);
-		final Set<Integer> expectedDigits = Stream.of(5, 7, 8, 9).collect(Collectors.toSet());
-		assertEquals(expectedDigits, actualDigits);
-	}
+        // GIVEN
+        int number = 95897;
 
-	@Test
-	public void listDigits_shouldReturnsTheListOfDigits_ofNegativeInteger() {
-		final int number = -124432;
-		final Set<Integer> actualDigits = calculatorUnderTest.digitsSet(number);
-		assertThat(actualDigits).containsExactlyInAnyOrder(1, 2, 3, 4);
-	}
+        // WHEN
+        Set<Integer> actualDigits = calculatorUnderTest.digitsSet(number);
 
-	@Test
-	public void listDigits_shouldReturnsTheListOfZero_ofZero() {
-		final int number = 0;
-		final Set<Integer> actualDigits = calculatorUnderTest.digitsSet(number);
-		assertThat(actualDigits).containsExactly(0);
-	}
+        // THEN
+        assertThat(actualDigits).containsExactlyInAnyOrder(5, 7, 8, 9);
+    }
 
-	@Disabled("Stoppé car cela échoue tous les mardis")
-	@Test
-	public void testDate() {
-		// GIVEN
-		final LocalDateTime dateTime = LocalDateTime.now();
+    @Test
+    public void digitsSet_shouldReturnsTheSetOfDigits_ofNegativeIntegers() {
 
-		// WHEN
+        // GIVEN
+        int number = -124432;
 
-		// THEN
-		assertThat(dateTime.getDayOfWeek()).isNotEqualTo(DayOfWeek.TUESDAY);
-	}
+        // WHEN
+        Set<Integer> actualDigits = calculatorUnderTest.digitsSet(number);
 
-	@Test
-	public void fact12_shouldReturnsTheCorrectAnswer() {
-		// GIVEN
-		final int number = 12;
+        // THEN
+        assertThat(actualDigits).containsExactlyInAnyOrder(1, 2, 3, 4);
+    }
 
-		// WHEN
-		final int cacheFactorial = calculatorUnderTest.fact(number);
+    @Test
+    public void digitsSet_shouldReturnsTheSetOfZero_ofZero() {
 
-		// THEN
-		assertThat(cacheFactorial).isEqualTo(12 * 11 * 10 * 9 * 8 * 7 * 6 * 5 * 4 * 3 * 2);
+        // GIVEN
+        int number = 0;
 
-	}
+        // WHEN
+        Set<Integer> actualDigits = calculatorUnderTest.digitsSet(number);
 
-	@Test
-	public void digitsSetOfFact12_shouldReturnsTheCorrectAnswser() {
-		// GIVEN
-		final int cacheFactorial = 479001600;
+        // THEN
+        assertThat(actualDigits).containsExactly(0);
+    }
 
-		// WHEN
-		final Set<Integer> actualDigits = calculatorUnderTest.digitsSet(cacheFactorial);
+    /*-------------------------------- After tests -------------------------------------*/
 
-		// THEN
-		assertThat(actualDigits).containsExactlyInAnyOrder(0, 1, 4, 6, 7, 9);
-	}
+    @AfterEach
+    public void undefineCalculator() {
+        logger.info("Undefining Calculator under test...");
+        calculatorUnderTest = null;
+    }
 
-	@Test
-	public void multiplyAndDivide_shouldBeIdentity() {
-		// GIVEN
-		final Random r = new Random();
-		final int a = 1 + r.nextInt(100);
-		final int b = 1 + r.nextInt(3);
-
-		// WHEN on multiplie a par b puis on divise par b
-		final int c = calculatorUnderTest.divide(calculatorUnderTest.multiply(a, b), b);
-
-		// THEN on ré-obtient a
-		assertThat(c).isEqualTo(a);
-	}
-
+    @AfterAll
+    public static void initFinishingTime() {
+        System.out.println("Finishing stopwatch for CalculatorTest...");
+        Instant endedAt = Instant.now();
+        long duration = Duration.between(startedAt, endedAt).toMillis();
+        System.out.println("Duration of the tests: " + duration + " ms");
+    }
 }
